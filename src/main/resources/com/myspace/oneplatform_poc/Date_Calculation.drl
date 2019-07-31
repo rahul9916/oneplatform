@@ -1,0 +1,28 @@
+package com.myspace.oneplatform_poc;
+
+import com.myspace.oneplatform_poc.dateObject;
+
+import java.text.SimpleDateFormat
+import java.util.Date;
+import java.time.LocalDateTime;
+
+
+rule "datecheck"
+ruleflow-group "datecheck"
+when
+$dateObject:dateObject(((dateObject.date.getTime()-new Date().getTime())/(1000 * 60 * 60 * 24))>=-30)
+then
+System.out.println("duplicate");
+$dateObject.setIsDuplicate(true);
+update($dateObject)
+end;
+
+rule "datecheck2"
+ruleflow-group "datecheck"
+when
+$dateObject:dateObject(((dateObject.date.getTime()-new Date().getTime())/(1000 * 60 * 60 * 24))<-30)
+then
+System.out.println("not duplicate");
+$dateObject.setIsDuplicate(false);
+update($dateObject)
+end;
